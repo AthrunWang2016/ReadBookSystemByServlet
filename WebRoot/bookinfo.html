@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+</head>
+<body>
+
+<table class="table table-striped table-bordered table-condensed">  
+<tr><th>编号</th><th>名称</th><th>价格</th><th>操作</th></tr>  
+</table> 
+
+<script src="vendor/jquery-1.10.0.js"></script>
+<script src="vendor/jquery-form.js"></script>
+<script src="vendor/jquery.validate-1.13.1.js"></script>
+<script>
+    window.onload=function(){
+  $.get("http://pc-20140117ubxx:8080/ReadBookSystemByServlet/book/allInfo",function(data,status){
+    showResponse(data,status);
+  });
+}
+	 function showResponse(responseText,statusText) {
+	  if(statusText=='success'){
+	    var obj = JSON.parse(responseText);
+	    if(obj.result=="true"){
+	    var item;
+	     $.each(obj.entities,function(i,result){  
+                        item = "<tr><td>"+result['num']+"</td><td>"+result['name']+"</td><td>"+result['price']+"</td><td>查看</td></tr>";  
+                        $('.table').append(item);  
+                    }); 
+	    }else{
+	     console.log(obj.msg);
+	     alert(obj.msg);
+	    }
+	  }else{
+	  	alert('网络连接错误！');
+	  }
+	  }
+</script>
+
+</body>
+</html>
